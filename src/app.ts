@@ -1,9 +1,9 @@
-const express = require('express')
-const app = express()
+import express, { Application, Request, Response } from 'express'
+const app : Application= express()
 const port = 3000
 
-app.get('/', (req, res) => {
+app.get('/', (req : Request, res: Response) => {
   res.send('Hello World!')
 })
-console.log(process.cwd())
-// /Users/sayadriyad/Downloads/Next Level Web Development/Be A Mongoose Master/first-project/.env
+
+export default app
