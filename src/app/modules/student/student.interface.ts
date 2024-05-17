@@ -48,4 +48,5 @@ export interface Student {
   permanentAddress: string;
   guardian: Guardian;
   isActive: 'active' | 'inActive';
+  localGuardian: LocalGuardian;
 }
