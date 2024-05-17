@@ -1,5 +1,6 @@
 import { Schema, model, connect } from 'mongoose';
 
+// guardian type
 export type Guardian = {
   fatherName: string;
   fatherContact: number;
@@ -8,19 +9,28 @@ export type Guardian = {
   motherContact: number;
   motherOccupation: string;
 };
+// name type
+export type Name = {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+};
+// local Guardian
+export type LocalGuardian = {
+  name: string;
+  contact: number;
+  occupation: string;
+  address: string;
+};
 export interface Student {
-  id: number;
-  name: {
-    firstName: string;
-    middleName: string;
-    lastName: string;
-  };
+  id: string;
+  name: Name;
   gender: 'male' | 'female';
-  dateOfBirth: string;
+  dateOfBirth?: string;
   email: string;
   contactNumber: number;
   emergencyContactNumber: number;
-  avatar?: string;
+  profileImage?: string;
   bloodGroup?:
     | 'A'
     | 'A+'
@@ -37,4 +47,5 @@ export interface Student {
   presentAddress: string;
   permanentAddress: string;
   guardian: Guardian;
+  isActive: 'active' | 'inActive';
 }
