@@ -52,3 +52,5 @@ const studentSchema = new Schema<Student>({
   isActive: ['active', 'inActive'],
   localGuardian: localGuardianSchema,
 });
+
+const Student = model<Student>('Student', studentSchema);

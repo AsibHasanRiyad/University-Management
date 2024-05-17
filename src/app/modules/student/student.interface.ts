@@ -1,5 +1,11 @@
 import { Schema, model, connect } from 'mongoose';
 
+// name type
+export type Name = {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+};
 // guardian type
 export type Guardian = {
   fatherName: string;
@@ -9,12 +15,7 @@ export type Guardian = {
   motherContact: number;
   motherOccupation: string;
 };
-// name type
-export type Name = {
-  firstName: string;
-  middleName: string;
-  lastName: string;
-};
+
 // local Guardian
 export type LocalGuardian = {
   name: string;
