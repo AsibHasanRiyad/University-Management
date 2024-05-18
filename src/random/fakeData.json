@@ -1,0 +1,30 @@
+{
+  "student": {
+    "id": "1fgd",
+    "name": {
+      "firstName": "John",
+      "middleName": "Doe",
+      "lastName": "Smith456"
+    },
+    "gender": "male",
+    "email": "john@example.com",
+    "emergencyContactNumber": 1234567890,
+    "presentAddress": "123 Main St, City",
+    "permanentAddress": "456 Park Ave, Town",
+    "guardian": {
+      "fatherName": "Michael Smith",
+      "fatherContact": 9876543210,
+      "fatherOccupation": "Engineer",
+      "motherName": "Emily Smith",
+      "motherContact": 9876543211,
+      "motherOccupation": "Doctor"
+    },
+    "isActive": "active",
+    "localGuardian": {
+      "name": "Jane Doe",
+      "contact": 9876543212,
+      "occupation": "Teacher",
+      "address": "789 Elm St, Village"
+    }
+  }
+}
