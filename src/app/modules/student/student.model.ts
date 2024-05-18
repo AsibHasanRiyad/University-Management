@@ -3,9 +3,9 @@ import { Schema, model, connect } from 'mongoose';
 
 // name Schema
 const studentNameSchema = new Schema<Name>({
-  firstName: { type: String, required: true },
+  firstName: { type: String, required: [true, 'First name is required'] },
   middleName: { type: String },
-  lastName: { type: String, required: true },
+  lastName: { type: String, required: [true, 'Last name is required'] },
 });
 // guardian Schema
 const guardianSchema = new Schema<Guardian>({
@@ -25,19 +25,22 @@ const localGuardianSchema = new Schema<LocalGuardian>({
 });
 
 const studentSchema = new Schema<Student>({
-  id: { type: String, required: true },
+  id: { type: String, required: [true, 'Id is required'] },
   name: {
     type: studentNameSchema,
-    required: true,
+    required: [true, ' Name Field is required'],
   },
   gender: {
     type: String,
     enum: ['male', 'female', 'other'],
-    required: true,
+    required: [true, 'Gender is required'],
   },
   dateOfBirth: { type: String },
-  email: { type: String, required: true },
-  emergencyContactNumber: { type: Number, required: true },
+  email: { type: String, required: [true, 'Email is required'] },
+  emergencyContactNumber: {
+    type: Number,
+    required: [true, 'Emergency contact is required'],
+  },
   profileImage: { type: String },
   bloodGroup: {
     type: String,
@@ -60,7 +63,7 @@ const studentSchema = new Schema<Student>({
   permanentAddress: { type: String },
   guardian: {
     type: guardianSchema,
-    required: true,
+    required: [true, 'Guardian is required'],
   },
   isActive: {
     type: String,
@@ -69,7 +72,7 @@ const studentSchema = new Schema<Student>({
   },
   localGuardian: {
     type: localGuardianSchema,
-    required: true,
+    required: [true, 'Local guardian is required'],
   },
 });
 
