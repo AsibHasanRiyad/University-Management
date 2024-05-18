@@ -1,5 +1,3 @@
-import { Schema, model, connect } from 'mongoose';
-
 // name type
 export type Name = {
   firstName: string;

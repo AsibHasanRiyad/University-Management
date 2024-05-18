@@ -38,7 +38,7 @@ const localGuardianSchema = new Schema<LocalGuardian>({
   occupation: { type: String },
   address: { type: String },
 });
-
+// main schema
 const studentSchema = new Schema<Student>({
   id: { type: String, required: [true, 'Id is required'], unique: true },
   name: {
