@@ -119,9 +119,14 @@ const studentSchema = new Schema<Student>({
     type: localGuardianSchema,
     required: [true, 'Local guardian is required'],
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // ----------------- middleware -----------
+// ----------------- Document middleware -----------
 // pre
 studentSchema.pre('save', async function (next) {
   // console.log(this, 'Pre hook: We will save data');
@@ -134,8 +139,17 @@ studentSchema.pre('save', async function (next) {
   next();
 });
 // post
-studentSchema.post('save', function () {
-  console.log(this, 'Post hook: We  saved our data');
+studentSchema.post('save', function (doc, next) {
+  // console.log(this, 'Post hook: We  saved our data');
+  // after save i will make the password of database as empty string
+  doc.password = '';
+  next();
+});
+
+// -------- query middleware -----------
+studentSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
 });
 
 export const StudentModel = model<Student>('Student', studentSchema);

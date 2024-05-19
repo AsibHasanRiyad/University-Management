@@ -49,4 +49,5 @@ export interface Student {
   guardian: Guardian;
   isActive: 'active' | 'inActive';
   localGuardian: LocalGuardian;
+  isDeleted: boolean;
 }

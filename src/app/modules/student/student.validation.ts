@@ -60,6 +60,7 @@ const studentSchema = z.object({
   guardian: guardianSchema,
   isActive: z.enum(['active', 'inActive']),
   localGuardian: localGuardianSchema,
+  isDeleted: z.boolean(),
 });
 
 export default studentSchema;
