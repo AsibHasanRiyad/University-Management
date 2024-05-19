@@ -9,25 +9,25 @@ const studentNameSchema = new Schema<Name>({
     required: [true, 'First name is required'],
     maxlength: [20, 'First name can not be more than 20 character'],
     trim: true,
-    validate: {
-      validator: function (value: String) {
-        if (typeof value !== 'string' || value.length === 0) {
-          return '';
-        }
-        const result = value.charAt(0).toUpperCase() + value.slice(1);
-        return result === value;
-      },
-      message: '{VALUE} is not in capitalize format',
-    },
+    // validate: {
+    //   validator: function (value: String) {
+    //     if (typeof value !== 'string' || value.length === 0) {
+    //       return '';
+    //     }
+    //     const result = value.charAt(0).toUpperCase() + value.slice(1);
+    //     return result === value;
+    //   },
+    //   message: '{VALUE} is not in capitalize format',
+    // },
   },
   middleName: { type: String },
   lastName: {
     type: String,
     required: [true, 'Last name is required'],
-    validate: {
-      validator: (value: string) => validator.isAlpha(value),
-      message: '{VALUE} in not a valid last name',
-    },
+    // validate: {
+    //   validator: (value: string) => validator.isAlpha(value),
+    //   message: '{VALUE} in not a valid last name',
+    // },
   },
 });
 // guardian Schema
@@ -67,10 +67,10 @@ const studentSchema = new Schema<Student>({
     type: String,
     required: [true, 'Email is required'],
     unique: true,
-    validate: {
-      validator: (value: string) => validator.isEmail(value),
-      message: '{VALUE} is not a valid email type',
-    },
+    // validate: {
+    //   validator: (value: string) => validator.isEmail(value),
+    //   message: '{VALUE} is not a valid email type',
+    // },
   },
   emergencyContactNumber: {
     type: Number,

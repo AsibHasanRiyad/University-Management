@@ -1,7 +1,7 @@
 // name type
 export type Name = {
   firstName: string;
-  middleName: string;
+  middleName?: string;
   lastName: string;
 };
 // guardian type
@@ -27,7 +27,7 @@ export interface Student {
   gender: 'male' | 'female';
   dateOfBirth?: string;
   email: string;
-  contactNumber: number;
+  contactNumber?: number;
   emergencyContactNumber: number;
   profileImage?: string;
   bloodGroup?:
