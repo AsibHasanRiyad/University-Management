@@ -30,6 +30,7 @@ const localGuardianSchema = Joi.object({
 // Define Joi schema for Student
 const studentValidationSchema = Joi.object({
   id: Joi.string().required(),
+  password: Joi.string().required().max(20),
   name: nameSchema.required(),
   gender: Joi.string().valid('male', 'female', 'other').required(),
   dateOfBirth: Joi.string().allow('', null), // Allow empty or null values for dateOfBirth

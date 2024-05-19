@@ -23,6 +23,7 @@ export type LocalGuardian = {
 };
 export interface Student {
   id: string;
+  password: string;
   name: Name;
   gender: 'male' | 'female';
   dateOfBirth?: string;
