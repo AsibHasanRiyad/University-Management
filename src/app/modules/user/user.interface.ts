@@ -6,9 +6,9 @@ export type TUser = {
   role: 'admin' | 'student' | 'faculty';
   isDeleted: boolean;
 };
-
-export type NewUser = {
-  password: string;
-  role: 'student' | 'faculty' | 'admin';
-  id: string;
-};
+// instead of this we can use partial
+// export type NewUser = {
+//   password: string;
+//   role: 'student' | 'faculty' | 'admin';
+//   id: string;
+// };

@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 // name type
 export type Name = {
   firstName: string;
@@ -21,10 +23,10 @@ export type LocalGuardian = {
   occupation: string;
   address: string;
 };
-export interface Student {
+export interface TStudent {
   id: string;
+  user: Types.ObjectId;
   password: string;
-  user: string;
   name: Name;
   gender: 'male' | 'female';
   dateOfBirth?: string;
@@ -48,7 +50,6 @@ export interface Student {
   presentAddress: string;
   permanentAddress: string;
   guardian: Guardian;
-  isActive: 'active' | 'inActive';
   localGuardian: LocalGuardian;
   isDeleted: boolean;
 }

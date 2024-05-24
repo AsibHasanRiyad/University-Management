@@ -1,4 +1,3 @@
-import { Student } from './student.interface';
 import { StudentModel } from './student.model';
 
 // get student

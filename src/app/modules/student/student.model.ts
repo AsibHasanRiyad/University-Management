@@ -1,6 +1,6 @@
 import validator from 'validator';
 import bcrypt from 'bcrypt';
-import { Guardian, LocalGuardian, Name, Student } from './student.interface';
+import { Guardian, LocalGuardian, Name, TStudent } from './student.interface';
 import { Schema, model, connect } from 'mongoose';
 import config from '../../config';
 
@@ -49,8 +49,14 @@ const localGuardianSchema = new Schema<LocalGuardian>({
   address: { type: String },
 });
 // main schema
-const studentSchema = new Schema<Student>({
+const studentSchema = new Schema<TStudent>({
   id: { type: String, required: [true, 'Id is required'], unique: true },
+  user: {
+    type: Schema.Types.ObjectId,
+    required: [true, 'User Id is required'],
+    unique: true,
+    ref: 'User',
+  },
   password: {
     type: String,
     required: [true, 'Password is required'],
@@ -110,11 +116,6 @@ const studentSchema = new Schema<Student>({
     type: guardianSchema,
     required: [true, 'Guardian is required'],
   },
-  isActive: {
-    type: String,
-    enum: ['active', 'inActive'],
-    default: 'active',
-  },
   localGuardian: {
     type: localGuardianSchema,
     required: [true, 'Local guardian is required'],
@@ -162,4 +163,4 @@ studentSchema.pre('aggregate', function (next) {
   next();
 });
 
-export const StudentModel = model<Student>('Student', studentSchema);
+export const StudentModel = model<TStudent>('Student', studentSchema);

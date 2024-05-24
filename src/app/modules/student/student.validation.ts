@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { Guardian, LocalGuardian, Name } from './student.interface';
 
 // Name schema
 const studentNameSchema = z.object({
