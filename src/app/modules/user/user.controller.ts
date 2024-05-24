@@ -6,7 +6,6 @@ const createStudent = async (req: Request, res: Response) => {
     const { password, student: studentData } = req.body;
     // Validate the studentData if you have a schema
     // const zodParsedData = userSchema.parse(studentData);
-    console.log(req.body, 'this is the student data.......................');
     const result = await UserServices.createStudentIntoDB(
       password,
       studentData,
