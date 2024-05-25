@@ -29,37 +29,41 @@ const localGuardianSchema = z.object({
 
 // Main student schema
 const studentSchema = z.object({
-  id: z.string(),
-  password: z.string(),
-  name: studentNameSchema,
-  gender: z.enum(['male', 'female']),
-  dateOfBirth: z.string().optional(),
-  email: z.string().email(),
-  contactNumber: z.number().optional(), // Make contactNumber optional
-  emergencyContactNumber: z.number(),
-  profileImage: z.string().optional(),
-  bloodGroup: z
-    .enum([
-      'A',
-      'A+',
-      'A-',
-      'B',
-      'B+',
-      'B-',
-      'AB',
-      'AB+',
-      'AB-',
-      'O',
-      'O+',
-      'O-',
-    ])
-    .optional(),
-  presentAddress: z.string(),
-  permanentAddress: z.string(),
-  guardian: guardianSchema,
-  isActive: z.enum(['active', 'inActive']),
-  localGuardian: localGuardianSchema,
-  isDeleted: z.boolean(),
+  body: z.object({
+    id: z.string(),
+    password: z.string(),
+    name: studentNameSchema,
+    gender: z.enum(['male', 'female']),
+    dateOfBirth: z.string().optional(),
+    email: z.string().email(),
+    contactNumber: z.number().optional(), // Make contactNumber optional
+    emergencyContactNumber: z.number(),
+    profileImage: z.string().optional(),
+    bloodGroup: z
+      .enum([
+        'A',
+        'A+',
+        'A-',
+        'B',
+        'B+',
+        'B-',
+        'AB',
+        'AB+',
+        'AB-',
+        'O',
+        'O+',
+        'O-',
+      ])
+      .optional(),
+    presentAddress: z.string(),
+    permanentAddress: z.string(),
+    guardian: guardianSchema,
+    isActive: z.enum(['active', 'inActive']),
+    localGuardian: localGuardianSchema,
+    isDeleted: z.boolean(),
+  }),
 });
 
-export default studentSchema;
+export const studentValidations = {
+  studentSchema,
+};
