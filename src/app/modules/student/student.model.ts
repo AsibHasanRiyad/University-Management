@@ -1,7 +1,6 @@
-import validator from 'validator';
 import bcrypt from 'bcrypt';
 import { Guardian, LocalGuardian, Name, TStudent } from './student.interface';
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import config from '../../config';
 
 // name Schema
