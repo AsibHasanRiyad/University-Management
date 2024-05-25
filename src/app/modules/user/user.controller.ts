@@ -1,7 +1,11 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { UserServices } from './user.service';
 
-const createStudent = async (req: Request, res: Response) => {
+const createStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { password, student: studentData } = req.body;
     // Validate the studentData if you have a schema
@@ -17,12 +21,7 @@ const createStudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    console.error('Error creating student:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Something went wrong',
-      error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    next(error);
   }
 };
 

@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { TUser } from './user.interface';
+import bcrypt from 'bcrypt';
+import config from '../../config';
 
 export const userSchema = new Schema<TUser>(
   {
@@ -10,7 +12,8 @@ export const userSchema = new Schema<TUser>(
     },
     password: {
       type: String,
-      required: true,
+      required: [true, 'Password is required'],
+      maxlength: [20, 'Password can not be more than 20 character'],
     },
     needsPasswordChange: {
       type: Boolean,
@@ -34,5 +37,25 @@ export const userSchema = new Schema<TUser>(
     timestamps: true,
   },
 );
+// ----------------- middleware -----------
+// ----------------- Document middleware -----------
+// pre
+userSchema.pre('save', async function (next) {
+  // console.log(this, 'Pre hook: We will save data');
+  // -------- hashing password before save into db
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+// post
+userSchema.post('save', function (doc, next) {
+  // console.log(this, 'Post hook: We  saved our data');
+  // after save i will make the password of database as empty string
+  doc.password = '';
+  next();
+});
 
 export const UserModel = model<TUser>('User', userSchema);

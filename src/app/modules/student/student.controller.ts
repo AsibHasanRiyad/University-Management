@@ -1,9 +1,13 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { studentServices } from './student.service';
 // import studentValidationSchema from './student.joi.validation';
 
 // get all student
-const getAllStudent = async (req: Request, res: Response) => {
+const getAllStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const result = await studentServices.getAllStudent();
     res.status(200).json({
@@ -12,15 +16,21 @@ const getAllStudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.status(200).json({
-      success: false,
-      message: 'Something went wrong',
-      error: error,
-    });
+    // global error handler
+    next(error);
+    // res.status(200).json({
+    //   success: false,
+    //   message: 'Something went wrong',
+    //   error: error,
+    // });
   }
 };
 // get single student
-const getSingleStudent = async (req: Request, res: Response) => {
+const getSingleStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { studentId } = req.params;
     const result = await studentServices.getSingleStudent(studentId);
@@ -30,10 +40,14 @@ const getSingleStudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
-const deleteSingleStudent = async (req: Request, res: Response) => {
+const deleteSingleStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { studentId } = req.params;
     const result = await studentServices.deleteStudent(studentId);
@@ -43,11 +57,7 @@ const deleteSingleStudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.status(200).json({
-      success: false,
-      message: 'Something went wrong',
-      error: error,
-    });
+    next();
   }
 };
 export const studentController = {
