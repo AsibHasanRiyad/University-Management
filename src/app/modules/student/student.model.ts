@@ -52,7 +52,7 @@ const studentSchema = new Schema<TStudent>({
     type: Schema.Types.ObjectId,
     required: [true, 'User Id is required'],
     unique: true,
-    ref: 'User',
+    ref: 'UserModel',
   },
   name: {
     type: studentNameSchema,
