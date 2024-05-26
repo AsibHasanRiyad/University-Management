@@ -26,7 +26,7 @@ export type LocalGuardian = {
 export interface TStudent {
   id: string;
   user: Types.ObjectId;
-  password: string;
+  // password: string;
   name: Name;
   gender: 'male' | 'female';
   dateOfBirth?: string;
