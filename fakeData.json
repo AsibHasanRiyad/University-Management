@@ -1,14 +1,15 @@
 {
+  "password": "12345",
   "student": {
-    "id": "123456789",
-    "password": "test1pass",
+    "id": "1fgd",
     "name": {
-      "firstName": "Riyad",
+      "firstName": "John",
       "middleName": "Doe",
       "lastName": "Smith456"
     },
     "gender": "male",
-    "email": "Riyad@example.com",
+    "email": "john@example.com",
+    "password": "12345",
     "emergencyContactNumber": 1234567890,
     "presentAddress": "123 Main St, City",
     "permanentAddress": "456 Park Ave, Town",

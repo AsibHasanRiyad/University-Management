@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // Name schema
-const studentNameSchema = z.object({
+const studentNameValidationSchema = z.object({
   firstName: z
     .string()
     .max(20, { message: 'First name cannot be more than 20 characters' }),
@@ -10,7 +10,7 @@ const studentNameSchema = z.object({
 });
 
 // Guardian schema
-const guardianSchema = z.object({
+const guardianValidationSchema = z.object({
   fatherName: z.string(),
   fatherContact: z.number(),
   fatherOccupation: z.string(),
@@ -20,7 +20,7 @@ const guardianSchema = z.object({
 });
 
 // Local guardian schema
-const localGuardianSchema = z.object({
+const localGuardianValidationSchema = z.object({
   name: z.string(),
   contact: z.number(),
   occupation: z.string(),
@@ -28,13 +28,13 @@ const localGuardianSchema = z.object({
 });
 
 // Main student schema
-const studentSchema = z.object({
+const createStudentValidationSchema = z.object({
   body: z.object({
     password: z.string(),
     student: z.object({
-      name: studentNameSchema,
+      name: studentNameValidationSchema,
       gender: z.enum(['male', 'female']),
-      dateOfBirth: z.string().optional(),
+      dateOfBirth: z.date().optional(),
       email: z.string().email(),
       contactNumber: z.number().optional(), // Make contactNumber optional
       emergencyContactNumber: z.number(),
@@ -57,12 +57,12 @@ const studentSchema = z.object({
         .optional(),
       presentAddress: z.string(),
       permanentAddress: z.string(),
-      guardian: guardianSchema,
-      localGuardian: localGuardianSchema,
+      guardian: guardianValidationSchema,
+      localGuardian: localGuardianValidationSchema,
     }),
   }),
 });
 
 export const studentValidations = {
-  studentSchema,
+  createStudentValidationSchema,
 };

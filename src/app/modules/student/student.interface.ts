@@ -29,7 +29,7 @@ export interface TStudent {
   // password: string;
   name: Name;
   gender: 'male' | 'female';
-  dateOfBirth?: string;
+  dateOfBirth?: Date;
   email: string;
   contactNumber?: number;
   emergencyContactNumber: number;
