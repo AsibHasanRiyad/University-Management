@@ -21,8 +21,14 @@ const getSingleAcademicSemester = async (id: any) => {
   return result;
 };
 
+const updateSingleSemester = async (payload: TAcademicSemester) => {
+  const result = await AcademicSemesterModel.updateOne(payload);
+  return result;
+};
+
 export const AcademicSemesterServices = {
   createAcademicSemester,
   getAllAcademicSemester,
   getSingleAcademicSemester,
+  updateSingleSemester,
 };
