@@ -34,6 +34,7 @@ export interface TStudent {
   contactNumber?: number;
   emergencyContactNumber: number;
   profileImage?: string;
+  admissionSemester: Types.ObjectId;
   bloodGroup?:
     | 'A'
     | 'A+'

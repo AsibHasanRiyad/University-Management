@@ -38,12 +38,13 @@ const getSingleSemester = catchAsync(async (req, res) => {
 });
 
 const updateASemester = catchAsync(async (req, res) => {
+  const { id } = req.params;
   const data = req.body;
-  const result = await AcademicSemesterServices.updateSingleSemester(data);
+  const result = await AcademicSemesterServices.updateSingleSemester(data, id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Single Academic Semester',
+    message: ' Academic Semester Updated',
     data: result,
   });
 });

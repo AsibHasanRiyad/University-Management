@@ -82,6 +82,7 @@ const studentSchema = new Schema<TStudent>({
     required: [true, 'Emergency contact is required'],
   },
   profileImage: { type: String },
+  admissionSemester: { type: Schema.Types.ObjectId, ref: 'AcademicSemester' },
   bloodGroup: {
     type: String,
     enum: {
