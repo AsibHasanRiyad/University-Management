@@ -6,7 +6,7 @@ export type Name = {
   middleName?: string;
   lastName: string;
 };
-// guardian types
+// guardian type
 export type Guardian = {
   fatherName: string;
   fatherContact: number;
