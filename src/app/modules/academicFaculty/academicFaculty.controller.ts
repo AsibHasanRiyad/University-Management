@@ -31,7 +31,7 @@ const getSingleAcademicFaculty = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic Faculty Data is Update',
+    message: 'Single Academic Faculty ',
     data: result,
   });
 });
