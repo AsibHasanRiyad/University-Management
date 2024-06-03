@@ -83,6 +83,10 @@ const studentSchema = new Schema<TStudent>({
   },
   profileImage: { type: String },
   admissionSemester: { type: Schema.Types.ObjectId, ref: 'AcademicSemester' },
+  academicDepartment: {
+    type: Schema.Types.ObjectId,
+    ref: 'AcademicDepartment',
+  },
   bloodGroup: {
     type: String,
     enum: {
