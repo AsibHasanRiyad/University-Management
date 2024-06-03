@@ -16,7 +16,14 @@ const getAllStudent = async () => {
 // get single student
 const getSingleStudent = async (id: string) => {
   // const result = await StudentModel.findOne({ id });
-  const result = await StudentModel.aggregate([{ $match: { id: id } }]);
+  const result = await StudentModel.findById(id)
+    .populate('admissionSemester')
+    .populate({
+      path: 'academicDepartment',
+      populate: {
+        path: 'academicFaculty',
+      },
+    });
   return result;
 };
 // delete student from db
