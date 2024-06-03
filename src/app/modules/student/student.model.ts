@@ -1,3 +1,5 @@
+import httpStatus from 'http-status';
+import AppError from '../../errors/AppError';
 import { Guardian, LocalGuardian, Name, TStudent } from './student.interface';
 import { Schema, model } from 'mongoose';
 
@@ -71,7 +73,7 @@ const studentSchema = new Schema<TStudent>({
   email: {
     type: String,
     required: [true, 'Email is required'],
-    unique: true,
+    // unique: true,
     // validate: {
     //   validator: (value: string) => validator.isEmail(value),
     //   message: '{VALUE} is not a valid email type',
@@ -141,6 +143,23 @@ studentSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({
     $match: { isDeleted: { $ne: true } },
   });
+  next();
+});
+studentSchema.pre('save', async function (next) {
+  console.log('emailllllllllllllllllll');
+  const isEmailExist = await StudentModel.findOne({ email: this.email });
+  if (isEmailExist) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Email already Exist');
+  }
+  next();
+});
+studentSchema.pre('findOneAndUpdate', async function (next) {
+  console.log('findoneeeeeeeeeeeeeee');
+  const query = this.getQuery();
+  const isUserExist = await StudentModel.findOne({ id: query });
+  if (!isUserExist) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'User Does not  Exist');
+  }
   next();
 });
 
