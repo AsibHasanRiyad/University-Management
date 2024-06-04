@@ -3,12 +3,12 @@
   "student": {
     "id": "1fgd",
     "name": {
-      "firstName": "John",
+      "firstName": "Suuu",
       "middleName": "Doe",
       "lastName": "Smith456"
     },
     "gender": "male",
-    "email": "john@example.com",
+    "email": "john@example2.com",
     "password": "12345",
     "emergencyContactNumber": 1234567890,
     "presentAddress": "123 Main St, City",
@@ -21,7 +21,8 @@
       "motherContact": 9876543211,
       "motherOccupation": "Doctor"
     },
-    "isActive": "active",
+    "admissionSemester": "665be723e36180b414b78a41",
+    "academicDepartment": "665ca494f31ce85764a398b0",
     "localGuardian": {
       "name": "Jane Doe",
       "contact": 9876543212,

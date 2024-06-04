@@ -64,6 +64,53 @@ const createStudentValidationSchema = z.object({
   }),
 });
 
+// Update schemas with all fields optional
+const updateStudentNameValidationSchema = studentNameValidationSchema.partial();
+const updateGuardianValidationSchema = guardianValidationSchema.partial();
+const updateLocalGuardianValidationSchema =
+  localGuardianValidationSchema.partial();
+
+const updateStudentValidationSchema = z.object({
+  body: z
+    .object({
+      password: z.string().optional(),
+      student: z
+        .object({
+          name: updateStudentNameValidationSchema.optional(),
+          gender: z.enum(['male', 'female']).optional(),
+          dateOfBirth: z.string().optional(),
+          email: z.string().email().optional(),
+          contactNumber: z.number().optional(),
+          emergencyContactNumber: z.number().optional(),
+          profileImage: z.string().optional(),
+          admissionSemester: z.string().optional(),
+          bloodGroup: z
+            .enum([
+              'A',
+              'A+',
+              'A-',
+              'B',
+              'B+',
+              'B-',
+              'AB',
+              'AB+',
+              'AB-',
+              'O',
+              'O+',
+              'O-',
+            ])
+            .optional(),
+          presentAddress: z.string().optional(),
+          permanentAddress: z.string().optional(),
+          guardian: updateGuardianValidationSchema.optional(),
+          localGuardian: updateLocalGuardianValidationSchema.optional(),
+        })
+        .partial(),
+    })
+    .partial(),
+});
+
 export const studentValidations = {
   createStudentValidationSchema,
+  updateStudentValidationSchema,
 };

@@ -153,14 +153,14 @@ studentSchema.pre('save', async function (next) {
   }
   next();
 });
-studentSchema.pre('findOneAndUpdate', async function (next) {
-  console.log('findoneeeeeeeeeeeeeee');
-  const query = this.getQuery();
-  const isUserExist = await StudentModel.findOne({ id: query });
-  if (!isUserExist) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'User Does not  Exist');
-  }
-  next();
-});
+// studentSchema.pre('findOneAndUpdate', async function (next) {
+//   console.log('findoneeeeeeeeeeeeeee');
+//   const query = this.getQuery();
+//   const isUserExist = await StudentModel.findOne({ id: query });
+//   if (!isUserExist) {
+//     throw new AppError(httpStatus.BAD_REQUEST, 'User Does not  Exist');
+//   }
+//   next();
+// });
 
 export const StudentModel = model<TStudent>('Student', studentSchema);
