@@ -29,7 +29,7 @@ academicDepartmentSchema.pre('save', async function (next) {
   if (isDepartmentExist) {
     throw new AppError(
       httpStatus.NOT_FOUND,
-      'Academic department Dose not exist',
+      'Academic department  already  exist',
     );
   }
   next();

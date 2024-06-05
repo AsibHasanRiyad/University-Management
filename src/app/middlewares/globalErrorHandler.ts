@@ -1,17 +1,26 @@
-import { NextFunction, Request, Response } from 'express';
+import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+import { ZodError } from 'zod';
 
-const globalErrorHandler = (
-  error: any,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  const statusCode = error.statusCode || 500;
-  const message = error.message || 'Something went wrong';
+const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
+  let statusCode = error.statusCode || 500;
+  let message = error.message || 'Something went wrong';
+  type TErrorSource = {
+    path: string | number;
+    message: string;
+  }[];
+  let errorSource: TErrorSource = [
+    {
+      path: '',
+      message: 'Something went wrong',
+    },
+  ];
+  if (error instanceof ZodError) {
+  }
   return res.status(statusCode).json({
     success: false,
     message,
-    error,
+    errorSource,
+    myError: error,
   });
 };
 export default globalErrorHandler;
