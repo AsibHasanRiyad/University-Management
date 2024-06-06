@@ -1,7 +1,9 @@
 import { ErrorRequestHandler } from 'express';
-import { ZodError, ZodIssue } from 'zod';
+import { ZodError } from 'zod';
 import { TErrorSource } from '../interface/error';
 import config from '../config';
+import handelZodError from '../errors/HandelZodError';
+import handelMongooseValidationError from '../errors/handelMongooseValidationError';
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
   let statusCode = error.statusCode || 500;
@@ -13,26 +15,17 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
       message: 'Something went wrong',
     },
   ];
-  const handelZodError = (error: ZodError) => {
-    // console.log(error);
-    const errorSource: TErrorSource = error.issues.map((issue: ZodIssue) => {
-      return {
-        path: issue?.path[issue.path.length - 1],
-        message: issue.message,
-      };
-    });
-    const statusCode = 400;
-    return {
-      statusCode,
-      message: ' Validation Error',
-      errorSource,
-    };
-  };
+
   if (error instanceof ZodError) {
     const simplifiedError = handelZodError(error);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSource = simplifiedError?.errorSource;
+  } else if (error?.name === 'ValidationError') {
+    const simplifiedError = handelMongooseValidationError(error);
+    (statusCode = simplifiedError?.statusCode),
+      (message = simplifiedError?.message),
+      (errorSource = simplifiedError?.errorSource);
   }
   return res.status(statusCode).json({
     success: false,
