@@ -5,6 +5,7 @@ import config from '../config';
 import handelZodError from '../errors/HandelZodError';
 import handelMongooseValidationError from '../errors/handelMongooseValidationError';
 import HandleCastError from '../errors/HandelCastError';
+import HandleDuplicateID from '../errors/HandleDuplicateID';
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
   let statusCode = error.statusCode || 500;
@@ -32,12 +33,18 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSource = simplifiedError?.errorSource;
+  } else if (error?.code === 11000) {
+    const simplifiedError = HandleDuplicateID(error);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSource = simplifiedError?.errorSource;
   }
   return res.status(statusCode).json({
     success: false,
     message,
     errorSource,
     stack: config.node_env === 'development' ? error.stack : null,
+    error,
   });
 };
 export default globalErrorHandler;

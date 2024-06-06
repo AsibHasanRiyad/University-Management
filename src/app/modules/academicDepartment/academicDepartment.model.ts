@@ -21,19 +21,19 @@ export const academicDepartmentSchema = new Schema<TAcademicDepartment>(
   },
 );
 
-academicDepartmentSchema.pre('save', async function (next) {
-  const isDepartmentExist = await AcademicDepartmentModel.findOne({
-    name: this.name,
-  });
-  // console.log(isDepartmentExist);
-  if (isDepartmentExist) {
-    throw new AppError(
-      httpStatus.NOT_FOUND,
-      'Academic department  already  exist',
-    );
-  }
-  next();
-});
+// academicDepartmentSchema.pre('save', async function (next) {
+//   const isDepartmentExist = await AcademicDepartmentModel.findOne({
+//     name: this.name,
+//   });
+//   // console.log(isDepartmentExist);
+//   if (isDepartmentExist) {
+//     throw new AppError(
+//       httpStatus.NOT_FOUND,
+//       'Academic department  already  exist',
+//     );
+//   }
+//   next();
+// });
 
 academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
   const query = this.getQuery();
