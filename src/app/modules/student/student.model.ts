@@ -146,7 +146,6 @@ studentSchema.pre('aggregate', function (next) {
   next();
 });
 studentSchema.pre('save', async function (next) {
-  console.log('emailllllllllllllllllll');
   const isEmailExist = await StudentModel.findOne({ email: this.email });
   if (isEmailExist) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Email already Exist');
@@ -154,7 +153,6 @@ studentSchema.pre('save', async function (next) {
   next();
 });
 // studentSchema.pre('findOneAndUpdate', async function (next) {
-//   console.log('findoneeeeeeeeeeeeeee');
 //   const query = this.getQuery();
 //   const isUserExist = await StudentModel.findOne({ id: query });
 //   if (!isUserExist) {

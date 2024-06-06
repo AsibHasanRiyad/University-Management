@@ -12,6 +12,12 @@ app.use(cors());
 //application route
 app.use('/api/v1', router);
 
+// test
+// const test = async (req: Request, res: Response) => {
+//   Promise.reject();
+// };
+// app.get('/test', test);
+
 app.get('/', (req: Request, res: Response) => {
   res.send('PH University!');
 });

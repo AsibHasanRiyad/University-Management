@@ -6,10 +6,11 @@ import handelZodError from '../errors/HandelZodError';
 import handelMongooseValidationError from '../errors/handelMongooseValidationError';
 import HandleCastError from '../errors/HandelCastError';
 import HandleDuplicateID from '../errors/HandleDuplicateID';
+import AppError from '../errors/AppError';
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
-  let statusCode = error.statusCode || 500;
-  let message = error.message || 'Something went wrong';
+  let statusCode = 500;
+  let message = 'Something went wrong';
 
   let errorSource: TErrorSource = [
     {
@@ -38,6 +39,23 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSource = simplifiedError?.errorSource;
+  } else if (error instanceof AppError) {
+    statusCode = error?.statusCode;
+    message = error?.message;
+    errorSource = [
+      {
+        path: '',
+        message: error.message,
+      },
+    ];
+  } else if (error instanceof Error) {
+    message = error?.message;
+    errorSource = [
+      {
+        path: '',
+        message: error.message,
+      },
+    ];
   }
   return res.status(statusCode).json({
     success: false,

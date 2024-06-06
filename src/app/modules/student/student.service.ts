@@ -6,8 +6,16 @@ import { UserModel } from '../user/user.model';
 import { TStudent } from './student.interface';
 
 // get student
-const getAllStudent = async () => {
-  const result = await StudentModel.find()
+const getAllStudent = async (query: Record<string, unknown>) => {
+  let searchTerm = '';
+  if (query?.searchTerm) {
+    searchTerm = query?.searchTerm as string;
+  }
+  const result = await StudentModel.find({
+    $or: ['email', 'name.firstName', 'presentAddress'].map((field) => ({
+      [field]: { $regex: searchTerm, $options: 'i' },
+    })),
+  })
     .populate('admissionSemester')
     .populate({
       path: 'academicDepartment',
@@ -86,10 +94,11 @@ const deleteStudent = async (id: string) => {
     await session.commitTransaction();
     await session.endSession();
     return deletedStudent;
-  } catch (error) {
+  } catch (error: any) {
     await session.abortTransaction();
     await session.endSession();
-    throw new AppError(httpStatus.BAD_REQUEST, 'Failed To Delete Student');
+    throw new Error(error);
+    // throw new AppError(httpStatus.BAD_REQUEST, 'Failed To Delete Student');
   }
 };
 
