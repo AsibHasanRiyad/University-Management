@@ -4,6 +4,7 @@ import { TErrorSource } from '../interface/error';
 import config from '../config';
 import handelZodError from '../errors/HandelZodError';
 import handelMongooseValidationError from '../errors/handelMongooseValidationError';
+import HandleCastError from '../errors/HandelCastError';
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
   let statusCode = error.statusCode || 500;
@@ -26,6 +27,11 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     (statusCode = simplifiedError?.statusCode),
       (message = simplifiedError?.message),
       (errorSource = simplifiedError?.errorSource);
+  } else if (error?.name === 'CastError') {
+    const simplifiedError = HandleCastError(error);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSource = simplifiedError?.errorSource;
   }
   return res.status(statusCode).json({
     success: false,
