@@ -160,5 +160,8 @@ studentSchema.pre('save', async function (next) {
 //   }
 //   next();
 // });
-
+// virtual
+studentSchema.virtual('fullName').get(function () {
+  return this?.name?.firstName + this?.name?.middleName + this?.name?.lastName;
+});
 export const StudentModel = model<TStudent>('Student', studentSchema);

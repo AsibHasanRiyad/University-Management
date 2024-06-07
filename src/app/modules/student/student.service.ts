@@ -4,25 +4,85 @@ import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 import { UserModel } from '../user/user.model';
 import { TStudent } from './student.interface';
+import QueryBuilder from '../../builder/queryBuilder';
+import { studentSearchableField } from './student.constant';
 
 // get student
+// const getAllStudent = async (query: Record<string, unknown>) => {
+//   console.log(query);
+//   const queryObj = { ...query };
+//   let searchTerm = '';
+//   const studentSearchableField = ['email', 'name.firstName', 'presentAddress'];
+//   if (query?.searchTerm) {
+//     searchTerm = query?.searchTerm as string;
+//   }
+
+//   const searchQuery = StudentModel.find({
+//     $or: studentSearchableField.map((field) => ({
+//       [field]: { $regex: searchTerm, $options: 'i' },
+//     })),
+//   });
+//   const excludesFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
+//   excludesFields.forEach((el) => delete queryObj[el]);
+//   const filterQuery = searchQuery
+//     .find(queryObj)
+//     .populate('admissionSemester')
+//     .populate({
+//       path: 'academicDepartment',
+//       populate: {
+//         path: 'academicFaculty',
+//       },
+//     });
+
+//   let sort = '-createdAt';
+//   if (query.sort) {
+//     sort = query.sort as string;
+//   }
+//   const sortQuery = filterQuery.sort(sort);
+
+//   let limit = 10;
+//   let page = 1;
+//   let skip = 0;
+//   if (query.limit) {
+//     limit = Number(query.limit);
+//   }
+//   if (query.page) {
+//     page = Number(query.page);
+//     skip = (page - 1) * limit;
+//   }
+//   const paginationQuery = sortQuery.skip(skip);
+//   const limitQuery = paginationQuery.limit(limit);
+
+//   // field limiting
+//   let fields = '-__v';
+//   if (query.fields) {
+//     // we have to convert 'name,email' format to 'name email' format , that means remove the comma
+//     fields = (query.fields as string).split(',').join(' ');
+//   }
+//   const fieldsQuery = await limitQuery.select(fields);
+//   return fieldsQuery;
+// };
+
+// get student with queryBuilder
 const getAllStudent = async (query: Record<string, unknown>) => {
-  let searchTerm = '';
-  if (query?.searchTerm) {
-    searchTerm = query?.searchTerm as string;
-  }
-  const result = await StudentModel.find({
-    $or: ['email', 'name.firstName', 'presentAddress'].map((field) => ({
-      [field]: { $regex: searchTerm, $options: 'i' },
-    })),
-  })
-    .populate('admissionSemester')
-    .populate({
-      path: 'academicDepartment',
-      populate: {
-        path: 'academicFaculty',
-      },
-    });
+  const studentQuery = new QueryBuilder(
+    StudentModel.find()
+      .populate('admissionSemester')
+      .populate({
+        path: 'academicDepartment',
+        populate: {
+          path: 'academicFaculty',
+        },
+      }),
+    query,
+  );
+  studentQuery
+    .search(studentSearchableField)
+    .filter()
+    .sort()
+    .pagination()
+    .fields();
+  const result = await studentQuery.modelQuery;
   return result;
 };
 
