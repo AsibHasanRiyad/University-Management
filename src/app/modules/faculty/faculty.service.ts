@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import QueryBuilder from '../../builder/queryBuilder';
+import QueryBuilder from '../../builder/QueryBuilder';
 import { FacultySearchableFields } from './faculty.constant';
 import { TFaculty } from './faculty.interface';
 import { Faculty } from './faculty.model';

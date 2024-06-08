@@ -7,10 +7,10 @@ const router = express.Router();
 // route => controller => service => model => Database
 // router.post('/create-student', studentController.createStudent);
 router.get('/', studentController.getAllStudent);
-router.get('/:studentId', studentController.getSingleStudent);
+router.get('/:id', studentController.getSingleStudent);
 
 router.patch(
-  '/:studentId',
+  '/:id',
   validateRequest(studentValidations.updateStudentValidationSchema),
   studentController.updateSingleStudent,
 );
