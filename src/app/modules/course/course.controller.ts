@@ -49,6 +49,7 @@ const getSingleCourse = catchAsync(async (req, res) => {
 //     data: result,
 //   });
 // });
+//
 
 const deleteCourse = catchAsync(async (req, res) => {
   const { id } = req.params;
