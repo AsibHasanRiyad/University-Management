@@ -1,17 +1,45 @@
+import QueryBuilder from '../../builder/QueryBuilder';
+import { courseSearchableFields } from './course.constant';
 import { TCourse } from './course.interface';
 import { CourseModel } from './course.model';
 
 const createCourseIntoDB = async (payload: TCourse) => {
-  const result = await CourseModel.create();
+  const result = await CourseModel.create(payload);
   return result;
 };
-const getAllCoursesFromDB = async () => {
-  const result = await CourseModel.find();
+const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
+  const courseQuery = new QueryBuilder(
+    CourseModel.find().populate('preRequisiteCourses.course'),
+    query,
+  )
+    .search(courseSearchableFields)
+    .filter()
+    .fields()
+    .sort()
+    .pagination()
+    .fields();
+  const result = await courseQuery.modelQuery;
   return result;
 };
 const getSingleCourseFromDB = async (id: string) => {
-  const result = await CourseModel.findById(id);
+  const result = await CourseModel.findById(id).populate(
+    'preRequisiteCourses.course',
+  );
   return result;
+};
+// update
+const updateCourse = async (id: string, payload: Partial<TCourse>) => {
+  const { preRequisiteCourses, ...courseRemainingData } = payload;
+  // basic course info update
+  const updateBasicCourseInfo = await CourseModel.findByIdAndUpdate(
+    id,
+    courseRemainingData,
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+  return updateBasicCourseInfo;
 };
 const deleteCourseFromDB = async (id: string) => {
   const result = await CourseModel.findByIdAndUpdate(
@@ -31,4 +59,5 @@ export const CourseServices = {
   getAllCoursesFromDB,
   getSingleCourseFromDB,
   deleteCourseFromDB,
+  updateCourse,
 };
