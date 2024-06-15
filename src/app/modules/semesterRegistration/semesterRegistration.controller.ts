@@ -48,7 +48,17 @@ const getSingleSemesterRegistration = catchAsync(
   },
 );
 const updateSingleSemesterRegistration = catchAsync(
-  async (req: Request, res: Response) => {},
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result =
+      await SemesterRegistrationServices.updateSemesterRegistrationIntoDB(id);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Semester Registration is retrieved successfully',
+      data: result,
+    });
+  },
 );
 
 export const SemesterRegistrationController = {
