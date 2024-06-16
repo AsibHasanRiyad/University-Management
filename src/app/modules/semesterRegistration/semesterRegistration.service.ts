@@ -4,6 +4,7 @@ import { AcademicSemesterModel } from '../academicSemester/academicSemester.mode
 import { TSemesterRegistration } from './semesterRegistration.interface';
 import { semesterRegistrationModel } from './semesterRegistration.model';
 import QueryBuilder from '../../builder/QueryBuilder';
+import { RegistrationStatus } from './semesterRegistration.constant';
 
 const createSemesterRegistrationIntoDB = async (
   payload: TSemesterRegistration,
@@ -68,7 +69,7 @@ const updateSemesterRegistrationIntoDB = async (
   if (!currentSemester) {
     throw new AppError(httpStatus.NOT_FOUND, `Requested semester not found`);
   }
-  if (currentSemesterStatus === 'ENDED') {
+  if (currentSemesterStatus === RegistrationStatus.ENDED) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       `This semester is already ${currentSemesterStatus}`,
@@ -76,13 +77,19 @@ const updateSemesterRegistrationIntoDB = async (
   }
 
   //  UPCOMING => ONGOING => ENDED
-  if (currentSemesterStatus === 'UPCOMING' && requestedStatus === 'ENDED') {
+  if (
+    currentSemesterStatus === RegistrationStatus.UPCOMING &&
+    requestedStatus === RegistrationStatus.ENDED
+  ) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       `You can not directly change status from  ${currentSemesterStatus} to ${requestedStatus} `,
     );
   }
-  if (currentSemesterStatus === 'ONGOING' && requestedStatus === 'UPCOMING') {
+  if (
+    currentSemesterStatus === RegistrationStatus.ONGOING &&
+    requestedStatus === RegistrationStatus.UPCOMING
+  ) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       `You can not directly change status from  ${currentSemesterStatus} to ${requestedStatus} `,
