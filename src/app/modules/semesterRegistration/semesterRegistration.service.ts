@@ -9,6 +9,17 @@ const createSemesterRegistrationIntoDB = async (
   payload: TSemesterRegistration,
 ) => {
   const academicSemester = payload?.academicSemester;
+  // check if there's any registered semester that is already UPCOMING / ONGOING
+  const isThereAnyUpcomingOrOngoingSemester =
+    await semesterRegistrationModel.findOne({
+      $or: [{ status: 'UPCOMING' }, { status: 'ONGOING' }],
+    });
+  if (isThereAnyUpcomingOrOngoingSemester) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      `There is already an ${isThereAnyUpcomingOrOngoingSemester.status} semester`,
+    );
+  }
   // check if semester exist or not
   const isAcademicSemesterExist =
     await AcademicSemesterModel.findById(academicSemester);
@@ -45,7 +56,49 @@ const getSingleSemesterRegistrationFromDB = async (id: string) => {
   const result = await semesterRegistrationModel.findById(id);
   return result;
 };
-const updateSemesterRegistrationIntoDB = async (id: string) => {};
+const updateSemesterRegistrationIntoDB = async (
+  id: string,
+  payload: Partial<TSemesterRegistration>,
+) => {
+  // if the registered semester registration is already ended we will not update it
+  const currentSemester = await semesterRegistrationModel.findById(id);
+  const currentSemesterStatus = currentSemester?.status;
+  const requestedStatus = payload?.status;
+
+  if (!currentSemester) {
+    throw new AppError(httpStatus.NOT_FOUND, `Requested semester not found`);
+  }
+  if (currentSemesterStatus === 'ENDED') {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      `This semester is already ${currentSemesterStatus}`,
+    );
+  }
+
+  //  UPCOMING => ONGOING => ENDED
+  if (currentSemesterStatus === 'UPCOMING' && requestedStatus === 'ENDED') {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      `You can not directly change status from  ${currentSemesterStatus} to ${requestedStatus} `,
+    );
+  }
+  if (currentSemesterStatus === 'ONGOING' && requestedStatus === 'UPCOMING') {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      `You can not directly change status from  ${currentSemesterStatus} to ${requestedStatus} `,
+    );
+  }
+
+  const result = await semesterRegistrationModel.findByIdAndUpdate(
+    id,
+    payload,
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+  return result;
+};
 
 export const SemesterRegistrationServices = {
   createSemesterRegistrationIntoDB,
