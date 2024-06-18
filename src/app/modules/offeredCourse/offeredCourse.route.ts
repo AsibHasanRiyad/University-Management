@@ -10,4 +10,10 @@ router.post(
   OfferedCourseController.createOfferedCourse,
 );
 
+router.patch(
+  '/update-offered-course',
+  validateRequest(OfferedCourseValidation.updateOfferedCourseValidationSchema),
+  OfferedCourseController.updateOfferedCourse,
+);
+
 export const OfferedCourseRoute = router;
