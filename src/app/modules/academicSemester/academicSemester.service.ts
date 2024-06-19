@@ -6,7 +6,7 @@ import { AcademicSemesterModel } from './academicSemester.model';
 
 const createAcademicSemester = async (payload: TAcademicSemester) => {
   if (academicSemesterNameCodeMapper[payload.name] !== payload.code) {
-    throw new AppError(403, 'Invalid Semester Code');
+    throw new AppError(httpStatus.BAD_REQUEST, 'Invalid Semester Code');
   }
   const result = await AcademicSemesterModel.create(payload);
 
@@ -18,14 +18,14 @@ const getAllAcademicSemester = async () => {
   return result;
 };
 
-const getSingleAcademicSemester = async (id: any) => {
+const getSingleAcademicSemester = async (id: string) => {
   const result = await AcademicSemesterModel.findById(id);
   return result;
 };
 
 const updateSingleSemester = async (
   payload: Partial<TAcademicSemester>,
-  id: any,
+  id: string,
 ) => {
   if (
     payload.name &&
