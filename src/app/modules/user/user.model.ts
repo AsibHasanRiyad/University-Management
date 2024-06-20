@@ -59,4 +59,15 @@ userSchema.post('save', function (doc, next) {
   next();
 });
 
+userSchema.statics.isUserExistByCustomId = async function (id: string) {
+  return await UserModel.findOne({ id });
+};
+
+userSchema.statics.isPasswordMatched = async function (
+  plainTextPassword,
+  hashedPassword,
+) {
+  return await bcrypt.compare(plainTextPassword, hashedPassword);
+};
+
 export const UserModel = model<TUser, TUserModel>('User', userSchema);

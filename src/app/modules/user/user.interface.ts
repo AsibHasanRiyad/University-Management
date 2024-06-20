@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Model } from 'mongoose';
 
 export interface TUser {
@@ -16,5 +17,9 @@ export interface TUser {
 // };
 
 export interface TUserModel extends Model<TUser> {
-  myStaticMethod(): number;
+  isUserExistByCustomId(id: string): Promise<TUser>;
+  isPasswordMatched(
+    plainTextPassword: string,
+    hashedPassword: string,
+  ): Promise<boolean>;
 }
