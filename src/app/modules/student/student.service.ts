@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import mongoose from 'mongoose';
 import { StudentModel } from './student.model';
 import AppError from '../../errors/AppError';
@@ -67,6 +68,7 @@ import QueryBuilder from '../../builder/QueryBuilder';
 const getAllStudent = async (query: Record<string, unknown>) => {
   const studentQuery = new QueryBuilder(
     StudentModel.find()
+      .populate('user')
       .populate('admissionSemester')
       .populate({
         path: 'academicDepartment',
@@ -90,6 +92,7 @@ const getAllStudent = async (query: Record<string, unknown>) => {
 const getSingleStudent = async (id: string) => {
   // const result = await StudentModel.findOne({ id });
   const result = await StudentModel.findById(id)
+    .populate('user')
     .populate('admissionSemester')
     .populate({
       path: 'academicDepartment',
