@@ -8,6 +8,7 @@ const validateRequest = (schema: AnyZodObject) => {
     // Validate the studentData if you have a schema
     await schema.parseAsync({
       body: req.body,
+      cookies: req.cookies,
     });
 
     next();

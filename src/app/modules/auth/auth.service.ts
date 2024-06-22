@@ -3,6 +3,7 @@ import AppError from '../../errors/AppError';
 import { UserModel } from '../user/user.model';
 import { TUserLogin } from './auth.interface';
 import { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import config from '../../config';
 import bcrypt from 'bcrypt';
 import { createToken } from '../../middlewares/auth.utils';
@@ -96,7 +97,52 @@ const changePassword = async (
   return result;
 };
 
+const refreshToken = async (token: string) => {
+  // check if the token is valid
+  const decoded = jwt.verify(
+    token,
+    config.jwt_refresh_secret as string,
+  ) as JwtPayload;
+  const { userId, iat } = decoded;
+  //checking if the user is exist or not ?
+  const user = await UserModel.isUserExistByCustomId(userId);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User Not Found');
+  }
+  //   check if the user is already deleted ?
+  if (user?.isDeleted) {
+    throw new AppError(httpStatus.NOT_FOUND, 'This user is deleted');
+  }
+  //   check if the user is blocked
+  if (user?.status === 'blocked ') {
+    throw new AppError(httpStatus.NOT_FOUND, 'This user is Blocked');
+  }
+  // check if issued token is not changed after password changed
+  if (
+    user.passwordChangeAt &&
+    UserModel.isJWTIssuedBeforePasswordChanged(
+      user.passwordChangeAt,
+      iat as number,
+    )
+  ) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+  }
+  const jwtPayload = {
+    userId: user.id,
+    role: user.role,
+  };
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string,
+  );
+  return {
+    accessToken,
+  };
+};
+
 export const AuthService = {
   loginUser,
   changePassword,
+  refreshToken,
 };
